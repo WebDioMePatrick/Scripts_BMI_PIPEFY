@@ -165,6 +165,10 @@ def Analisador_ID_CARD(idCard):
 
  if datat['current_phase']['name'] == 'Concluído': #captured card concluido
    vikra.append(datat)
+   kk = str(vikra[0]['created_at'])
+   kk = kk[0]+kk[1]+kk[2]+kk[3]+kk[4]+kk[5]+kk[6]+kk[7]+kk[8]+kk[9]#delimitando apenas as partes do vetor que quero
+   vikra[0]['created_at'] = kk
+   print(vikra[0]['created_at'])
    return vikra # se condição for satisfeito sera retornada
  else:
    return False #para remover em um possivel tratamento
