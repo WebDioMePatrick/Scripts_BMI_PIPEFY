@@ -12,18 +12,20 @@ for i in listaa:
   continue
  
 
+#print(len(a))
+#print(a[0][0]['created_at'])
 
 
-print(len(a))
 
-petr = a[0]
-print(petr[0]['created_at'])
-
-horario = petr[0]['created_at']
-
-#2024-05-17T01:14:35Z
-horario[5]+horario[6]#dia
-horario[8]+horario[9] #mes
-horario[0]+horario[1]+horario[2]+horario[3] # ano
-
-
+def BuscadoCard(cards,datas):
+  
+  for i in range(len(cards)):
+    for a in datas:
+     if cards[i][0]['created_at'] == a:
+       print('datas iguais: ',a)
+       break
+     
+     
+datas = ['17-02-2022','18-02-2022','17-05-2024','18-02-2023']
+  
+BuscadoCard(a,datas)
