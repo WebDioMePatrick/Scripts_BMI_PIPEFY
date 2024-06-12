@@ -1,39 +1,48 @@
 from tratamento import *
 import pandas as pd
+from criandoRelatorio import *
 
 
 
 def BuscadoCard(cards,datas):
   ArrayFindOK = [] 
+  contadorr  = 0
   for i in range(0,len(cards)): 
+    print(f'CONTADOR  = {contadorr}          CARDS LEM  = {len(cards)}')
+    contadorr = contadorr +1
     for a in range(0,len(cards[i]['fields'])):
      if cards[i]['fields'][a]['name'] == 'Data do Atendimento':
         #dentro de atendimento
         for b in datas:
-            print('stage 3')
             if cards[i]['fields'][a]['value'] == b:
              ArrayFindOK.append(cards[i])
-             break 
-        break 
+             print('stage 3')
+             break
+             
+        
     
-    print('QTD encontrado: ',len(ArrayFindOK))
-    print(datas)
-    for  i in range(0,ArrayFindOK):
+  print('QTD encontrado: ',len(ArrayFindOK))
+  return ArrayFindOK
+"""r,
+
+    for  i in range(0,len(ArrayFindOK)):
        for c in range(len(ArrayFindOK[i]['fields'])):
          if ArrayFindOK[i]['fields'][c]['name'] == 'Data do Atendimento':
              print(ArrayFindOK[i]['fields'][c]['value'])
              break
- 
+""" 
 def Introducao_Dados():
    print('==========================================================')
    print('DIA DEVE SER INFORMADO COM 2 DIGITOS E ANO COM 4 DIGITOS(2024)')
-   DataInicial= input('\tINFORME A DATA INICIAL(seguir esta estrutura dd-mm-aaaa):   \t')
-   DataFinal = input('\tINFORME A DATA FINAL(seguir esta estrutura dd-mm-aaaa):   \t')
+   #DataInicial= input('\tINFORME A DATA INICIAL(seguir esta estrutura dd-mm-aaaa):   \t')
+   #DataFinal = input('\tINFORME A DATA FINAL(seguir esta estrutura dd-mm-aaaa):   \t')
 
    print('==========================================================')
    
    #print('\t\t\n\n Data Escolhida:  {}-{}-{}'.format(DiaInicial,Mes,Ano), ' Até {}-{}-{}'.format(DiaFinal,Mes,Ano))
-   data_inicio,data_fim =DataInicial , DataFinal
+   #data_inicio,data_fim =DataInicial , DataFinal
+   data_inicio = '01-04-2024'
+   data_fim = '01-05-2024'
 
    try:
        data_inicio = pd.to_datetime(data_inicio, format='%d-%m-%Y')
@@ -87,13 +96,12 @@ for i in List_ID:
  except:
      contador = contador + 1
      
- if contador == 20:
-     break
  
  print(f'{contador}/{len(List_ID)}')
 
 print('INICANDO VIKRA2')
 #print(vikra[0]['fields'])
+#print(vikra2)
  
 
 
@@ -101,12 +109,29 @@ print('INICANDO VIKRA2')
 print('Cards CONCLUIDOS = ',len(vikra2))
 
 
-try:  
- dataFormatadas = Introducao_Dados()
- BuscadoCard(vikra2,dataFormatadas)
+def Dtwo(array):
+    nome = []
+    date_of_atendimento = []
+    
+    for a in range(0,len(array)):
+        for i in range(0,len(array[a]['fields'])):
+            if array[a]['fields'][i]['name'] == 'Nome do MEI':
+                nome.append(array[a]['fields'][i]['value'])
+            elif array[a]['fields'][i]['name'] == 'Data do Atendimento':
+                date_of_atendimento.append(array[a]['fields'][i]['value'])
+                
+    for i in range(0,len(nome)):
+        print(f'\tNomes : {nome[i]} \tData de Atendimento: {date_of_atendimento[i]}')
+            
+            
+    return nome,date_of_atendimento
+            
 
-except:
-     print("ERROR")
+dataFormatadas = Introducao_Dados()
+lista_de_cards_filtrados = BuscadoCard(vikra2,dataFormatadas)
+print('TAMANHO = ',len(lista_de_cards_filtrados))
+nome,DataDeAtendimento = Dtwo(lista_de_cards_filtrados)
+criar_relatorio(Tituloo='Relatorio Periodo BMI',periodo='OFF WRITE',Nome=nome,DataDoAtendimento=DataDeAtendimento)
 
 
 

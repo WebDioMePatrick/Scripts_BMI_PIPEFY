@@ -4,6 +4,7 @@ import pandas as pd
 from collections import OrderedDict
 import time
 
+
 url = "https://api.pipefy.com/graphql"
 token = 'eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJQaXBlZnkiLCJpYXQiOjE3MTc2OTQzNjksImp0aSI6IjA1ZmM3ZWVmLTVmNTYtNGQwOC04ODlkLTQxYTE2MzRmMTJjZCIsInN1YiI6MzA0MTgzNzk4LCJ1c2VyIjp7ImlkIjozMDQxODM3OTgsImVtYWlsIjoicHJvamV0b2JhaGlhbWVpQGdtYWlsLmNvbSJ9fQ.y1QnXR1u9wTtaxWs6vIjFklc0BxMisnRmxuFnwkw3p3v0QYSdmfTsPDbzrBZI2SZXBleILEVjh-ev5gBGUrQTQ'
 
@@ -173,8 +174,9 @@ def Analisador_ID_CARD(idCard):
        datat['fields'][i]['value'] = mm[0]+mm[1]+'-'+mm[3]+mm[4]+'-'+mm[6]+mm[7]+mm[8]+mm[9]
        print(datat['fields'][i]['value'])
        break
-   vikra.append(datat)
-   return vikra # se condição for satisfeito sera retornada
+   #vikra.append(datat)
+   return datat # se condição for satisfeito sera retornada vikra
+ 
  else:
    return False #para remover em um possivel tratamento
        
