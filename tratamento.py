@@ -172,7 +172,7 @@ def Analisador_ID_CARD(idCard):
      if datat['fields'][i]['name'] == 'Data do Atendimento':
        mm = str(datat['fields'][i]['value'])
        datat['fields'][i]['value'] = mm[0]+mm[1]+'-'+mm[3]+mm[4]+'-'+mm[6]+mm[7]+mm[8]+mm[9]
-       print(datat['fields'][i]['value'])
+       #print(datat['fields'][i]['value'])
        break
    #vikra.append(datat)
    return datat # se condição for satisfeito sera retornada vikra

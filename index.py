@@ -34,15 +34,15 @@ def BuscadoCard(cards,datas):
 def Introducao_Dados():
    print('==========================================================')
    print('DIA DEVE SER INFORMADO COM 2 DIGITOS E ANO COM 4 DIGITOS(2024)')
-   #DataInicial= input('\tINFORME A DATA INICIAL(seguir esta estrutura dd-mm-aaaa):   \t')
-   #DataFinal = input('\tINFORME A DATA FINAL(seguir esta estrutura dd-mm-aaaa):   \t')
+   DataInicial= input('\tINFORME A DATA INICIAL(seguir esta estrutura dd-mm-aaaa):   \t')
+   DataFinal = input('\tINFORME A DATA FINAL(seguir esta estrutura dd-mm-aaaa):   \t')
 
    print('==========================================================')
    
    #print('\t\t\n\n Data Escolhida:  {}-{}-{}'.format(DiaInicial,Mes,Ano), ' Até {}-{}-{}'.format(DiaFinal,Mes,Ano))
-   #data_inicio,data_fim =DataInicial , DataFinal
-   data_inicio = '01-04-2024'
-   data_fim = '01-05-2024'
+   data_inicio,data_fim =DataInicial , DataFinal
+   #data_inicio = '01-04-2024'
+   #data_fim = '01-05-2024'
 
    try:
        data_inicio = pd.to_datetime(data_inicio, format='%d-%m-%Y')
@@ -61,7 +61,8 @@ def Introducao_Dados():
        for data in lista_datas:
            datas_Formatadas.append(data.strftime('%d-%m-%Y'))
        
-       return datas_Formatadas
+       
+       return datas_Formatadas,data_inicio,data_fim
        
 
    except ValueError as ve:
@@ -127,11 +128,12 @@ def Dtwo(array):
     return nome,date_of_atendimento
             
 
-dataFormatadas = Introducao_Dados()
+dataFormatadas,data_inicio,data_fim = Introducao_Dados()
 lista_de_cards_filtrados = BuscadoCard(vikra2,dataFormatadas)
 print('TAMANHO = ',len(lista_de_cards_filtrados))
 nome,DataDeAtendimento = Dtwo(lista_de_cards_filtrados)
-criar_relatorio(Tituloo='Relatorio Periodo BMI',periodo='OFF WRITE',Nome=nome,DataDoAtendimento=DataDeAtendimento)
+
+criar_relatorio(Tituloo='Relatorio BMI MicroCredito',periodo=f'Periodo que Foi Determinado: {data_inicio.strftime('%d-%m-%Y')} / {data_fim.strftime('%d-%m-%Y')}',Nome=nome,DataDoAtendimento=DataDeAtendimento)
 
 
 
