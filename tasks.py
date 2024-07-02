@@ -18,6 +18,7 @@ for i in listaa:
 
 
 def BuscadoCard(cards,datas):
+  print(cards[1][0])
   
   for i in range(len(cards)):
     for a in datas:

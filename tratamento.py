@@ -59,6 +59,7 @@ def After():
  response = requests.post(url, headers=headers, json={"query": query3})
  controlador = response.json()['data']['allCards']
  databaseAA = []
+ print("MicroAPP by Patrickk:)")
  print('Carregando AFTERS')
  while controlador['pageInfo']['hasNextPage'] == True:
      databaseAA.append(controlador['pageInfo']['endCursor'])

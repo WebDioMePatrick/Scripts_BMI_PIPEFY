@@ -1,6 +1,7 @@
 from tratamento import *
 import pandas as pd
 from criandoRelatorio import *
+import os
 
 
 
@@ -32,17 +33,16 @@ def BuscadoCard(cards,datas):
              break
 """ 
 def Introducao_Dados():
-   print('==========================================================')
+   print('==========================================================ByPatrick')
    print('DIA DEVE SER INFORMADO COM 2 DIGITOS E ANO COM 4 DIGITOS(2024)')
    DataInicial= input('\tINFORME A DATA INICIAL(seguir esta estrutura dd-mm-aaaa):   \t')
    DataFinal = input('\tINFORME A DATA FINAL(seguir esta estrutura dd-mm-aaaa):   \t')
 
    print('==========================================================')
    
-   #print('\t\t\n\n Data Escolhida:  {}-{}-{}'.format(DiaInicial,Mes,Ano), ' Até {}-{}-{}'.format(DiaFinal,Mes,Ano))
    data_inicio,data_fim =DataInicial , DataFinal
    #data_inicio = '01-04-2024'
-   #data_fim = '01-05-2024'
+   #data_fim = '30-04-2024'
 
    try:
        data_inicio = pd.to_datetime(data_inicio, format='%d-%m-%Y')
@@ -98,7 +98,7 @@ for i in List_ID:
      contador = contador + 1
      
  
- print(f'{contador}/{len(List_ID)}')
+ print(f'CARREGANDO CARDS DO PIPE: {contador}/{len(List_ID)}')
 
 print('INICANDO VIKRA2')
 #print(vikra[0]['fields'])
@@ -113,28 +113,84 @@ print('Cards CONCLUIDOS = ',len(vikra2))
 def Dtwo(array):
     nome = []
     date_of_atendimento = []
+    valorTotal = []
     
-    for a in range(0,len(array)):
-        for i in range(0,len(array[a]['fields'])):
-            if array[a]['fields'][i]['name'] == 'Nome do MEI':
-                nome.append(array[a]['fields'][i]['value'])
-            elif array[a]['fields'][i]['name'] == 'Data do Atendimento':
-                date_of_atendimento.append(array[a]['fields'][i]['value'])
-                
-    for i in range(0,len(nome)):
-        print(f'\tNomes : {nome[i]} \tData de Atendimento: {date_of_atendimento[i]}')
+    for a in range(0, len(array)):
+        nome_val = 'campo vazio no card'
+        date_val = 'campo vazio no card'
+        valor_val = 'campo vazio no card'
+    
+        for i in range(0, len(array[a]['fields'])):
+            field_name = array[a]['fields'][i]['name']
+            field_value = array[a]['fields'][i]['value']
+    
+            if field_name == 'Nome do MEI':
+                nome_val = field_value
+            elif field_name == 'Data do Atendimento':
+                date_val = field_value
+            elif field_name == 'Qual pagamento deve ser realizado?':
+                if field_value != '' and field_value is not None:
+                    valor_val = field_value
+                else:
+                    valor_val = 'campo vazio no card'
+    
+        nome.append(nome_val)
+        date_of_atendimento.append(date_val)
+        valorTotal.append(valor_val)
+        
             
+        for i in range(0,len(nome)):
+            print(f'\tNomes : {nome[i]} \tData de Atendimento: {date_of_atendimento[i]}')
             
-    return nome,date_of_atendimento
+        
+        
+        print(F'LEN NAME = {len(nome)}')
+        
+        print(F'LEN DATE DE ATENDIMENTO = {len(date_of_atendimento)}')
+        
+        print(F'LEN VALOR = {len(valorTotal)}')
+        print(valorTotal)
+    
+              
+    return nome,date_of_atendimento,valorTotal
             
+
+
+
 
 dataFormatadas,data_inicio,data_fim = Introducao_Dados()
 lista_de_cards_filtrados = BuscadoCard(vikra2,dataFormatadas)
 print('TAMANHO = ',len(lista_de_cards_filtrados))
-nome,DataDeAtendimento = Dtwo(lista_de_cards_filtrados)
+nome,DataDeAtendimento,valorTotal = Dtwo(lista_de_cards_filtrados)
 
-criar_relatorio(Tituloo='Relatorio BMI MicroCredito',periodo=f'Periodo que Foi Determinado: {data_inicio.strftime('%d-%m-%Y')} / {data_fim.strftime('%d-%m-%Y')}',Nome=nome,DataDoAtendimento=DataDeAtendimento)
+if len(nome) and len(DataDeAtendimento)and len(valorTotal) != 0:
+ os.system('cls')
+ sucess = criar_relatorio(Tituloo='Relatorio BMI MicroCredito',periodo=f'{data_inicio.strftime('%d-%m-%Y')} / {data_fim.strftime('%d-%m-%Y')}',Nome=nome,DataDoAtendimento=DataDeAtendimento,valor=valorTotal,INICIO=data_inicio.strftime('%d-%m-%Y'),FIM=data_fim.strftime('%d-%m-%Y'))
+ print(sucess)
+elif len(nome) == 0:
+            os.system('cls')
+            print("\t\t\n\nNão ha dados especificados nesse periodo\n\n")
 
+print('\n\n=================================================================BYPatrick')
+continuar  = input('\t\tDeseja Continuar   (1:Sim)(0:Não):\t')
 
+if continuar == '1':
+    os.system('cls')
+    while continuar =='1':
+        dataFormatadas,data_inicio,data_fim = Introducao_Dados()
+        lista_de_cards_filtrados = BuscadoCard(vikra2,dataFormatadas)
+        print('TAMANHO = ',len(lista_de_cards_filtrados))
+        nome,DataDeAtendimento,valorTotal = Dtwo(lista_de_cards_filtrados)
 
+        if len(nome) and len(DataDeAtendimento)and len(valorTotal) != 0:
+         sucess = criar_relatorio(Tituloo='Relatorio BMI MicroCredito',periodo=f'{data_inicio.strftime('%d-%m-%Y')} / {data_fim.strftime('%d-%m-%Y')}',Nome=nome,DataDoAtendimento=DataDeAtendimento,valor=valorTotal,INICIO=data_inicio.strftime('%d-%m-%Y'),FIM=data_fim.strftime('%d-%m-%Y'))
+         print(sucess)
+        elif len(nome) == 0:
+            os.system('cls')
+            print("\t\t\n\nNão ha dados especificados nesse periodo\n\n")
+            
+        print('\n\n=================================================================BYPatrick')
+        continuar  = input('\t\tDeseja Continuar   (1:Sim)(0:Não):\t')
 
+if continuar == '0':
+    os.system('exit')
